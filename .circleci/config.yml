@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: l.gcr.io/google/bazel:0.25.2
+    steps:
+      - checkout
+      - run: bazel build //...
+      - run: bazel test //...
