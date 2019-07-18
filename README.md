@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/wimzyLive/serverless-di.svg?style=svg)](https://circleci.com/gh/wimzyLive/serverless-di)
 # serverless-di
 
 DI library for AWS Serverless world
