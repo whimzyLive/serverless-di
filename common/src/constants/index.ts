@@ -3,7 +3,7 @@ export const Globals = {
   SharedHandler: Symbol.for('SharedHandler'),
   SharedController: Symbol.for('SharedController'),
   Aws_ctx: Symbol.for('AwsContext'),
-  Aws_event: Symbol.for('AwsEvent'),
+  Aws_event: Symbol.for('AwsEvent')
 };
 
 export const Handlers = <any>{}; // Will be Dynamically binded by decorators
@@ -15,10 +15,13 @@ export const Methods = {
   DELETE: <any>{},
   PATCH: <any>{},
   OPTIONS: <any>{},
-  HEAD: <any>{},
+  HEAD: <any>{}
 };
 export const Utils = {
-  Logger: Symbol.for('Logger'),
+  Logger: Symbol.for('Logger')
+};
+export const AWS = {
+  DynamoDB: Symbol.for('DynamoDB')
 };
 
 export * from './event-sources';

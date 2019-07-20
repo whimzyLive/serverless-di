@@ -9,6 +9,9 @@ export namespace IAws {
     methodArn: string;
   }
 
+  /**
+   * Cognito Post confirmation trigger event payload
+   */
   export interface PostConfirmationTrigger {
     version: string;
     region: string;
