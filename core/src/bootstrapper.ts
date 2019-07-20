@@ -5,7 +5,7 @@ import { EventSource } from '@serverless-di/common';
 import {
   executeAuthoriserFunction,
   executeCustomFunction,
-  executeApiGatewayProxyFunction,
+  executeApiGatewayProxyFunction
 } from './executor';
 
 export const bootstrapHandler = async function(event: any, ctx: any, { container, key }) {
@@ -23,6 +23,7 @@ export const bootstrapHandler = async function(event: any, ctx: any, { container
       console.log('Falling back to Default');
       const res = await executeCustomFunction(handler, ctx, event);
       console.log(typeof res === 'object' ? JSON.stringify(res) : res);
+      return res;
     }
   }
 };
@@ -31,7 +32,7 @@ export const bootstrapController = async (event: any, ctx: any, { container, key
   const eventType = detectEventType(event);
   const controller = {
     target: container.get(Controllers[key]['target']),
-    methods: container.get(Controllers[key]['methods']),
+    methods: container.get(Controllers[key]['methods'])
   };
   console.log(`eventType: ${eventType}`);
 

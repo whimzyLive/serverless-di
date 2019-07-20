@@ -3,11 +3,12 @@ export namespace ICommon {
    * Modules are used to make different services, classes available within a singal container
    * @param declarations- used for registering any handlers
    * @param providers- used for registering services that interact with http
-   * @param utils- used for any other class that needs to work with di
+   * @param datasources- user to define list of data sources to be available for injecting
    */
   export interface Module {
     declarations: any[];
     providers?: any[];
+    datasources?: { dynamoDB?: [] }; // Currently only supports dynamoDB
   }
 
   /**

@@ -5,7 +5,6 @@ export const Globals = {
   Aws_ctx: Symbol.for('AwsContext'),
   Aws_event: Symbol.for('AwsEvent')
 };
-
 export const Handlers = <any>{}; // Will be Dynamically binded by decorators
 export const Controllers = <any>{}; // Will be Dynamically binded by decorators //{target:self, methods: {}}
 export const Methods = {
@@ -17,6 +16,8 @@ export const Methods = {
   OPTIONS: <any>{},
   HEAD: <any>{}
 };
+export const Env = <any>{};
+
 export const Utils = {
   Logger: Symbol.for('Logger')
 };
