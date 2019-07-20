@@ -5,12 +5,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictNullChecks": false,
-    "noImplicitAny": false,
-    "baseUrl": ".",
-    "paths": {
-      "@serverless-di/core": ["./core"],
-      "@serverless-di/common": ["./common"],
-      "@serverless-di/testing": ["./testing"]
-    }
+    "noImplicitAny": false
   }
 }

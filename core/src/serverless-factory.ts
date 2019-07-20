@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Container, ContainerModule } from 'inversify';
-import { Handlers, Controllers, Globals, Env } from '@serverless-di/common';
+import { Handlers, Controllers, Globals } from '@serverless-di/common';
 import { bootstrapController, bootstrapHandler } from './bootstrapper';
 import { container } from './config';
 export class ServerlessFactory {
@@ -16,15 +16,6 @@ export class ServerlessFactory {
     Reflect.ownKeys(appModule.prototype.bindings).forEach((binding: any) => {
       this._container.load(appModule.prototype.bindings[binding]);
     });
-    // bind all envs to env module
-    const envs = new ContainerModule(bind => {
-      Reflect.ownKeys(process.env).forEach(envKey => {
-        const key = (Env[envKey] = Symbol.for(envKey.toString()));
-        bind(key).toConstantValue(process.env[envKey.toString()]);
-      });
-    });
-    this._container.load(envs);
-    // load environment variables into container
     return this._container;
   }
 

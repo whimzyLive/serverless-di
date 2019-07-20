@@ -1,4 +1,4 @@
-import { Globals, Handlers, Controllers } from '../constants';
+import { Globals, Handlers, Controllers, Env } from '../constants';
 import { interfaces, ContainerModule, decorate, injectable, METADATA_KEY } from 'inversify';
 import { ICommon } from '../interfaces';
 
@@ -9,12 +9,15 @@ export function registerBindings(object: ICommon.Module) {
       // When there are values inside decorators
       switch (prop) {
         case 'declarations': {
-          bindings['declarations'] = registerDeclarations(object.declarations);
+          bindings['declarations'] = registerDeclarations(object[prop]);
           break;
         }
         case 'providers': {
-          bindings['providers'] = registerProviders(object.providers);
+          bindings['providers'] = registerProviders(object[prop]);
           break;
+        }
+        case 'environment': {
+          bindings['environment'] = registerEnvironment(object[prop]);
         }
         default: {
           console.log(
@@ -36,6 +39,15 @@ function registerDeclarations(declarations: any[]) {
 function registerProviders(providers: any[]) {
   return new ContainerModule(bind => {
     _bindProviders(providers, bind);
+  });
+}
+
+export function registerEnvironment(envVars: string[]) {
+  return new ContainerModule(bind => {
+    envVars.forEach(env => {
+      const key = (Env[env] = Symbol.for(env));
+      bind(key).toConstantValue(process.env[env] || '');
+    });
   });
 }
 
