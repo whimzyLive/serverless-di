@@ -8,7 +8,7 @@ export namespace ICommon {
   export interface Module {
     declarations: any[];
     providers?: any[];
-    datasources?: { dynamoDB?: [] }; // Currently only supports dynamoDB
+    datasources?: { dynamoDB?: Array<string> }; // Currently only supports dynamoDB
   }
 
   /**

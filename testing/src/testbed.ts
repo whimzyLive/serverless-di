@@ -1,11 +1,11 @@
-import { Env } from './../../bazel-serverless-di/common/src/constants/index';
 import 'reflect-metadata';
 import {
   ICommon,
   registerBindings,
   Handlers,
-  _verifiedProvider,
-  Controllers
+  _verifyProvider,
+  Controllers,
+  Env
 } from '@serverless-di/common';
 import { Container, ContainerModule } from 'inversify';
 import { container } from '@serverless-di/core';
@@ -44,7 +44,7 @@ export class TestBed {
       if (existingBinding) {
         TestBed._container.unbind(provider);
       }
-      const verifiedProvider = _verifiedProvider({
+      const verifiedProvider = _verifyProvider({
         provide: provider,
         useValue: newValue.useValue
       });

@@ -70,7 +70,7 @@ function _bindDeclarations(declarations: any[], bind: interfaces.Bind) {
 function _bindProviders(providers: any[], bind: interfaces.Bind) {
   providers.forEach((provider: any) => {
     if (typeof provider === 'object') {
-      const verifiedProvider = _verifiedProvider(provider);
+      const verifiedProvider = _verifyProvider(provider);
       const { key, value } = verifiedProvider;
       bind(key).to(value);
     } else {
@@ -84,7 +84,7 @@ function _bindProviders(providers: any[], bind: interfaces.Bind) {
   });
 }
 
-export function _verifiedProvider(provider) {
+export function _verifyProvider(provider) {
   if (provider.provide && provider.useValue) {
     const key = provider.provide;
     const value = provider.useValue;
@@ -95,7 +95,7 @@ export function _verifiedProvider(provider) {
     }
     return {
       key,
-      value,
+      value
     };
   } else {
     throw new Error('Could not bind provider, "provider" or "useValue" property is undefined');

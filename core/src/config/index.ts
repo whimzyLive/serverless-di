@@ -13,6 +13,6 @@ const awsModule = new ContainerModule(bind => {
 });
 
 const innerContainer = new Container();
-innerContainer.load(commonModule);
+innerContainer.load(commonModule, awsModule);
 
 export const container = innerContainer;
