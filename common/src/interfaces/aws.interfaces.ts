@@ -1,4 +1,3 @@
-import * as AWS from 'aws-sdk';
 export namespace IAws {
   /**
    * Token Authorizer
@@ -38,5 +37,10 @@ export namespace IAws {
       };
     };
     response: {};
+  }
+
+  export interface DynamoDB {
+    name: string;
+    region: string;
   }
 }

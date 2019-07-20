@@ -1,3 +1,5 @@
+import { DynamoDB } from '@serverless-di/core';
+import { AWS } from './../constants';
 import { Globals, Handlers, Controllers, Env } from '../constants';
 import { interfaces, ContainerModule, decorate, injectable, METADATA_KEY } from 'inversify';
 import { ICommon } from '../interfaces';
@@ -16,8 +18,13 @@ export function registerBindings(object: ICommon.Module) {
           bindings['providers'] = registerProviders(object[prop]);
           break;
         }
+        case 'datasources': {
+          bindings['datasources'] = registerDatasources(object[prop]);
+          break;
+        }
         case 'environment': {
           bindings['environment'] = registerEnvironment(object[prop]);
+          break;
         }
         default: {
           console.log(
@@ -42,7 +49,13 @@ function registerProviders(providers: any[]) {
   });
 }
 
-export function registerEnvironment(envVars: string[]) {
+function registerDatasources(datasources: ICommon.Datasources) {
+  return new ContainerModule(bind => {
+    _bindDynamoDBTables(datasources.dynamoDB, bind);
+  });
+}
+
+function registerEnvironment(envVars: string[]) {
   return new ContainerModule(bind => {
     envVars.forEach(env => {
       const key = (Env[env] = Symbol.for(env));
@@ -82,7 +95,7 @@ function _bindDeclarations(declarations: any[], bind: interfaces.Bind) {
 function _bindProviders(providers: any[], bind: interfaces.Bind) {
   providers.forEach((provider: any) => {
     if (typeof provider === 'object') {
-      const verifiedProvider = _verifyProvider(provider);
+      const verifiedProvider = verifyProvider(provider);
       const { key, value } = verifiedProvider;
       bind(key).to(value);
     } else {
@@ -96,7 +109,17 @@ function _bindProviders(providers: any[], bind: interfaces.Bind) {
   });
 }
 
-export function _verifyProvider(provider) {
+function _bindDynamoDBTables(dynamoTables: Array<ICommon.Table>, bind: interfaces.Bind) {
+  dynamoTables.forEach(table => {
+    bind(AWS.DynamoDB)
+      .toFactory(() => {
+        return () => new DynamoDB(table.name, table.region);
+      })
+      .whenTargetNamed(table.name);
+  });
+}
+
+export function verifyProvider(provider) {
   if (provider.provide && provider.useValue) {
     const key = provider.provide;
     const value = provider.useValue;

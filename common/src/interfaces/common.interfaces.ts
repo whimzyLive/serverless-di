@@ -9,13 +9,17 @@ export namespace ICommon {
   export interface Module {
     declarations: Array<any>;
     providers?: Array<any>;
-    datasources?: { dynamoDB?: Array<Table> }; // Currently only supports dynamoDB,
+    datasources?: Datasources; // Currently only supports dynamoDB,
     environment?: Array<string>;
+  }
+
+  export interface Datasources {
+    dynamoDB: Array<Table>;
   }
 
   export interface Table {
     name: string;
-    region?: string;
+    region: string;
   }
 
   /**

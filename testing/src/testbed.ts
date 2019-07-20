@@ -3,7 +3,7 @@ import {
   ICommon,
   registerBindings,
   Handlers,
-  _verifyProvider,
+  verifyProvider,
   Controllers
 } from '@serverless-di/common';
 import { Container, ContainerModule } from 'inversify';
@@ -46,7 +46,7 @@ export class TestBed {
       if (existingBinding) {
         TestBed._container.unbind(provider);
       }
-      const verifiedProvider = _verifyProvider({
+      const verifiedProvider = verifyProvider({
         provide: provider,
         useValue: newValue.useValue
       });
