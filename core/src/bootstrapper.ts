@@ -1,4 +1,4 @@
-import { EventSource } from './constants/event-sources';
+import { EventSource } from './constants';
 import { exhumeApiGatewayAuthorizer, exhumerApiGatewayProxy } from './exhumer';
 import { detectEventType } from './event-detector';
 import {
