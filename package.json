@@ -14,7 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@bazel/bazel": "0.25.1",
-    "@bazel/buildifier": "0.25.1",
+    "@bazel/buildifier": "0.26.0",
     "@bazel/ibazel": "0.10.3",
     "@bazel/jasmine": "0.29.2",
     "@bazel/typescript": "0.29.0",
