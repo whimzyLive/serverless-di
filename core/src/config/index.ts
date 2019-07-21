@@ -1,7 +1,7 @@
-import { Utils, AWS } from '@serverless-di/common';
 import { ContainerModule, Container } from 'inversify';
-import { Logger } from '../utils/logger.service';
+import { Logger } from '../common/logger.service';
 import { DynamoDB } from '../aws/dynamoDB.service';
+import { Utils, AWS } from '../constants';
 const commonModule = new ContainerModule(bind => {
   bind(Utils.Logger).to(Logger);
 });

@@ -4,10 +4,10 @@ import {
   registerBindings,
   Handlers,
   verifyProvider,
-  Controllers
-} from '@serverless-di/common';
+  Controllers,
+  container
+} from '@serverless-di/core';
 import { Container, ContainerModule } from 'inversify';
-import { container } from '@serverless-di/core';
 export class TestBed {
   private static _bindings: {
     declarations: ContainerModule;

@@ -1,4 +1,4 @@
-import { EventSource } from '@serverless-di/common';
+import { EventSource } from './constants/event-sources';
 
 export function detectEventType(event: any) {
   if (event.Records && event.Records[0].cf) return EventSource.CloudFront;

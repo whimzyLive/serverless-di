@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { ICommon } from './interfaces';
 import { Globals, Methods } from './constants';
 import { decorate, injectable } from 'inversify';
-import { registerBindings } from './utils';
+import { registerBindings } from './utils/register-binding';
 
 export function Module(object: ICommon.Module): any {
   return function(target: FunctionConstructor) {
@@ -20,7 +20,7 @@ export function Controller(): any {
       DELETE: <any>{},
       PATCH: <any>{},
       OPTIONS: <any>{},
-      HEAD: <any>{},
+      HEAD: <any>{}
     };
     // Get the metadata of each method and map it methods object
     Reflect.ownKeys(Methods).forEach(method => {
@@ -30,7 +30,7 @@ export function Controller(): any {
     });
     const controller = {
       target,
-      methods: _methods,
+      methods: _methods
     };
     Reflect.defineMetadata(Globals.SharedController, controller, target);
   };

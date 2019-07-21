@@ -1,12 +1,13 @@
+import { EventSource } from './constants/event-sources';
 import { exhumeApiGatewayAuthorizer, exhumerApiGatewayProxy } from './exhumer';
-import { ICommon, Handlers, Controllers } from '@serverless-di/common';
 import { detectEventType } from './event-detector';
-import { EventSource } from '@serverless-di/common';
 import {
   executeAuthoriserFunction,
   executeCustomFunction,
   executeApiGatewayProxyFunction
 } from './executor';
+import { ICommon } from './interfaces';
+import { Handlers, Controllers } from './constants';
 
 export const bootstrapHandler = async function(event: any, ctx: any, { container, key }) {
   const eventType = detectEventType(event);

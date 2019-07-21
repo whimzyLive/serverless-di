@@ -1,6 +1,6 @@
-import { DynamoDB } from '@serverless-di/core';
-import { AWS } from './../constants';
-import { Globals, Handlers, Controllers, Env } from '../constants';
+import { DynamoDB } from '../aws/dynamoDB.service';
+import { AWS } from '../../../core/src/constants';
+import { Globals, Handlers, Controllers, Env } from '../../../core/src/constants';
 import { interfaces, ContainerModule, decorate, injectable, METADATA_KEY } from 'inversify';
 import { ICommon } from '../interfaces';
 
@@ -51,6 +51,7 @@ function registerProviders(providers: any[]) {
 
 function registerDatasources(datasources: ICommon.Datasources) {
   return new ContainerModule(bind => {
+    // Currently only handles dynamoDB tables
     _bindDynamoDBTables(datasources.dynamoDB, bind);
   });
 }

@@ -1,5 +1,5 @@
-import { ICommon } from '@serverless-di/common';
 import { getMethodToExecute } from './utils';
+import { ICommon } from './interfaces';
 
 export const executeAuthoriserFunction = async (
   handler: ICommon.Handler,
@@ -46,8 +46,8 @@ export const executeApiGatewayProxyFunction = async (controller: any, ctx: any, 
           body: JSON.stringify({
             message: `Requested method <${incomingMethod}> does not exist on "${
               target.constructor.name
-            }" controller.`,
-          }),
+            }" controller.`
+          })
         };
       } else {
         return {
@@ -55,8 +55,8 @@ export const executeApiGatewayProxyFunction = async (controller: any, ctx: any, 
           body: JSON.stringify({
             message: `Requested method <${incomingMethod}/${methodTOExecute}> does not exist on <${
               target.constructor.name
-            }> controller.`,
-          }),
+            }> controller.`
+          })
         };
       }
     }

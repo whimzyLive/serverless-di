@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { Container, ContainerModule } from 'inversify';
-import { Handlers, Controllers, Globals } from '@serverless-di/common';
 import { bootstrapController, bootstrapHandler } from './bootstrapper';
 import { container } from './config';
+import { Handlers, Globals, Controllers } from './constants';
 export class ServerlessFactory {
   private _container: Container;
   constructor() {

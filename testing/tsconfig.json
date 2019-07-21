@@ -5,7 +5,6 @@
     "baseUrl": ".",
     "paths": {
       "@serverless-di/core": ["../core"],
-      "@serverless-di/common": ["../common"],
       "@serverless-di/testing": ["../testing"]
     }
   }
