@@ -8,4 +8,15 @@ export class DynamoDB {
     this.table = table;
     this.region = region;
   }
+
+  /**
+   * initialize db service with table name and region to perform query against
+   * @param table - table name
+   * @param region - region  that table resides in
+   * @optional - this must be called before any other operation, if not using @nammed() binding
+   */
+  init(table: string, region: string) {
+    this.table = table;
+    this.region = region;
+  }
 }

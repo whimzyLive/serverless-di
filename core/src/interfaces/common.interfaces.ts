@@ -4,13 +4,15 @@ export namespace ICommon {
    * @param declarations- used for registering any HANDLERS
    * @param providers- used for registering services that interact with http
    * @param datasources- used to define list of data sources to be available for injecting
-   * @param ENVironment- used to declare list of ENVironment variables
+   * @param environment- used to declare list of environment variables available for injecting
+   * @param config- used to set aws credentials on aws sdk
    */
   export interface Module {
     declarations: Array<any>;
     providers?: Array<any>;
     datasources?: Datasources; // Currently only supports dynamoDB,
-    ENVironment?: Array<string>;
+    environment?: Array<string>;
+    config?: Config;
   }
 
   export interface Datasources {
@@ -20,6 +22,11 @@ export namespace ICommon {
   export interface Table {
     name: string;
     region: string;
+  }
+
+  export interface Config {
+    ssm?: { path?: string; name: string };
+    env?: { accessIdKey: string; accessSecretKey: string };
   }
 
   /**

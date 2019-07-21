@@ -1,4 +1,4 @@
-export { inject, injectable } from 'inversify';
+export { inject, injectable, named } from 'inversify';
 export * from './src/serverless-factory';
 export * from './src/common/logger.service';
 export * from './src/config';

@@ -22,8 +22,12 @@ export function registerBindings(object: ICommon.Module) {
           bindings['datasources'] = registerDatasources(object[prop]);
           break;
         }
-        case 'ENVironment': {
-          bindings['ENVironment'] = registerENVironment(object[prop]);
+        case 'environment': {
+          bindings['environment'] = registerEnvironment(object[prop]);
+          break;
+        }
+        case 'config': {
+          bindings['config'] = registerConfig(object[prop]);
           break;
         }
         default: {
@@ -56,12 +60,19 @@ function registerDatasources(datasources: ICommon.Datasources) {
   });
 }
 
-function registerENVironment(ENVVars: string[]) {
+function registerEnvironment(envVars: string[]) {
   return new ContainerModule(bind => {
-    ENVVars.forEach(ENV => {
-      const key = (ENV[ENV] = Symbol.for(ENV));
+    envVars.forEach(env => {
+      const key = (ENV[env] = Symbol.for(env));
       bind(key).toConstantValue(process.env[ENV] || '');
     });
+  });
+}
+
+function registerConfig(config: ICommon.Config) {
+  return new ContainerModule(bind => {
+    // TODO
+    // Fetch and set aws creds to aws sdk
   });
 }
 
