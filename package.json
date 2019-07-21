@@ -20,7 +20,7 @@
     "@bazel/typescript": "0.29.0",
     "@types/jasmine": "3.3.13",
     "@types/mocha": "5.2.7",
-    "@types/node": "11.11.4",
+    "@types/node": "11.13.18",
     "@types/utf8": "2.1.6",
     "aws-sdk": "2.494.0",
     "jasmine": "3.3.1",
