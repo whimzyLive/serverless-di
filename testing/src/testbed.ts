@@ -2,9 +2,9 @@ import 'reflect-metadata';
 import {
   ICommon,
   registerBindings,
-  Handlers,
+  HANDLERS,
   verifyProvider,
-  Controllers,
+  CONTROLLERS,
   container
 } from '@serverless-di/core';
 import { Container, ContainerModule } from 'inversify';
@@ -12,7 +12,7 @@ export class TestBed {
   private static _bindings: {
     declarations: ContainerModule;
     providers: ContainerModule;
-    environment: ContainerModule;
+    ENVironment: ContainerModule;
   };
   private static _module: ICommon.Module;
   // create child container for inner scoped binding
@@ -28,10 +28,10 @@ export class TestBed {
   }
 
   static getHandler(name: string): ICommon.Handler {
-    return TestBed._container.get(Handlers[name]);
+    return TestBed._container.get(HANDLERS[name]);
   }
   static getController(name: string) {
-    return TestBed._container.get(Controllers[name]['target']);
+    return TestBed._container.get(CONTROLLERS[name]['target']);
   }
   static get(key: any) {
     return TestBed._container.get(key);

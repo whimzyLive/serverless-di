@@ -1,16 +1,16 @@
 export namespace ICommon {
   /**
    * Modules are used to make different services, classes available within a singal container
-   * @param declarations- used for registering any handlers
+   * @param declarations- used for registering any HANDLERS
    * @param providers- used for registering services that interact with http
    * @param datasources- used to define list of data sources to be available for injecting
-   * @param environment- used to declare list of environment variables
+   * @param ENVironment- used to declare list of ENVironment variables
    */
   export interface Module {
     declarations: Array<any>;
     providers?: Array<any>;
     datasources?: Datasources; // Currently only supports dynamoDB,
-    environment?: Array<string>;
+    ENVironment?: Array<string>;
   }
 
   export interface Datasources {
@@ -32,7 +32,7 @@ export namespace ICommon {
 
   /**
    * Logger Utitlity interface
-   * log and error methods take care of logging event in a consistant manner
+   * log and error METHODS take care of logging event in a consistant manner
    */
   export interface Logger {
     log(message: string, data?: any): void;

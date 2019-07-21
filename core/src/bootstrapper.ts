@@ -7,11 +7,11 @@ import {
   executeApiGatewayProxyFunction
 } from './executor';
 import { ICommon } from './interfaces';
-import { Handlers, Controllers } from './constants';
+import { HANDLERS, CONTROLLERS } from './constants';
 
 export const bootstrapHandler = async function(event: any, ctx: any, { container, key }) {
   const eventType = detectEventType(event);
-  const handler: ICommon.Handler = container.get(Handlers[key]);
+  const handler: ICommon.Handler = container.get(HANDLERS[key]);
 
   switch (eventType) {
     case EventSource.ApiGatewayAuthorizer: {
@@ -32,8 +32,8 @@ export const bootstrapHandler = async function(event: any, ctx: any, { container
 export const bootstrapController = async (event: any, ctx: any, { container, key }) => {
   const eventType = detectEventType(event);
   const controller = {
-    target: container.get(Controllers[key]['target']),
-    methods: container.get(Controllers[key]['methods'])
+    target: container.get(CONTROLLERS[key]['target']),
+    METHODS: container.get(CONTROLLERS[key]['METHODS'])
   };
   console.log(`eventType: ${eventType}`);
 

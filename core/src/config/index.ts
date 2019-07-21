@@ -1,9 +1,9 @@
 import { ContainerModule, Container } from 'inversify';
 import { Logger } from '../common/logger.service';
 import { DynamoDB } from '../aws/dynamoDB.service';
-import { Utils, AWS } from '../constants';
+import { UTILS, AWS } from '../constants';
 const commonModule = new ContainerModule(bind => {
-  bind(Utils.Logger).to(Logger);
+  bind(UTILS.Logger).to(Logger);
 });
 
 const awsModule = new ContainerModule(bind => {

@@ -16,15 +16,15 @@ export const executeAuthoriserFunction = async (
 
 export const executeApiGatewayProxyFunction = async (controller: any, ctx: any, event) => {
   const target = controller.target;
-  const methods = controller.methods;
-  // here controller value {target: self, get: {default: <function name>, "<option>": <function name>}, ...other methods}
+  const METHODS = controller.METHODS;
+  // here controller value {target: self, get: {default: <function name>, "<option>": <function name>}, ...other METHODS}
   const incomingMethod = event.httpMethod;
   const params = event.pathParameters;
 
   let response: any;
   try {
     const methodTOExecute = getMethodToExecute(event.path, params);
-    const methodFunctionName = methods[incomingMethod][methodTOExecute];
+    const methodFunctionName = METHODS[incomingMethod][methodTOExecute];
 
     if (methodFunctionName) {
       try {

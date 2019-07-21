@@ -1,6 +1,6 @@
 import { DynamoDB } from '../aws/dynamoDB.service';
 import { AWS } from '../../../core/src/constants';
-import { Globals, Handlers, Controllers, Env } from '../../../core/src/constants';
+import { GLOBALS, HANDLERS, CONTROLLERS, ENV } from '../../../core/src/constants';
 import { interfaces, ContainerModule, decorate, injectable, METADATA_KEY } from 'inversify';
 import { ICommon } from '../interfaces';
 
@@ -22,8 +22,8 @@ export function registerBindings(object: ICommon.Module) {
           bindings['datasources'] = registerDatasources(object[prop]);
           break;
         }
-        case 'environment': {
-          bindings['environment'] = registerEnvironment(object[prop]);
+        case 'ENVironment': {
+          bindings['ENVironment'] = registerENVironment(object[prop]);
           break;
         }
         default: {
@@ -56,11 +56,11 @@ function registerDatasources(datasources: ICommon.Datasources) {
   });
 }
 
-function registerEnvironment(envVars: string[]) {
+function registerENVironment(ENVVars: string[]) {
   return new ContainerModule(bind => {
-    envVars.forEach(env => {
-      const key = (Env[env] = Symbol.for(env));
-      bind(key).toConstantValue(process.env[env] || '');
+    ENVVars.forEach(ENV => {
+      const key = (ENV[ENV] = Symbol.for(ENV));
+      bind(key).toConstantValue(process.env[ENV] || '');
     });
   });
 }
@@ -68,21 +68,21 @@ function registerEnvironment(envVars: string[]) {
 function _bindDeclarations(declarations: any[], bind: interfaces.Bind) {
   declarations.forEach(declaration => {
     // If declaration has @Handler decorator
-    if (Reflect.hasOwnMetadata(Globals.SharedHandler, declaration)) {
-      // Add declaration to handlers Identifier
-      const key = (Handlers[declaration.name] = Symbol.for(declaration.name));
-      bind(key).to(Reflect.getOwnMetadata(Globals.SharedHandler, declaration));
+    if (Reflect.hasOwnMetadata(GLOBALS.SHARED_HANDLER, declaration)) {
+      // Add declaration to HANDLERS Identifier
+      const key = (HANDLERS[declaration.name] = Symbol.for(declaration.name));
+      bind(key).to(Reflect.getOwnMetadata(GLOBALS.SHARED_HANDLER, declaration));
       // If declaration has @Controller decorator
-    } else if (Reflect.hasOwnMetadata(Globals.SharedController, declaration)) {
-      Controllers[declaration.name] = {};
-      // Add declaration to controllers Identifier
-      const targetKey = (Controllers[declaration.name]['target'] = Symbol.for(declaration.name));
-      const methodsKey = (Controllers[declaration.name]['methods'] = Symbol.for(
-        `${declaration.name}Methods`
+    } else if (Reflect.hasOwnMetadata(GLOBALS.SHARED_CONTROLLER, declaration)) {
+      CONTROLLERS[declaration.name] = {};
+      // Add declaration to CONTROLLERS Identifier
+      const targetKey = (CONTROLLERS[declaration.name]['target'] = Symbol.for(declaration.name));
+      const METHODSKey = (CONTROLLERS[declaration.name]['METHODS'] = Symbol.for(
+        `${declaration.name}METHODS`
       ));
-      const controller = Reflect.getOwnMetadata(Globals.SharedController, declaration);
+      const controller = Reflect.getOwnMetadata(GLOBALS.SHARED_CONTROLLER, declaration);
       bind(targetKey).to(controller['target']);
-      bind(methodsKey).toConstantValue(controller['methods']);
+      bind(METHODSKey).toConstantValue(controller['METHODS']);
     } else {
       throw new Error(
         `${
