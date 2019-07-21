@@ -1,4 +1,4 @@
-export namespace IAws {
+export namespace IAWS {
   /**
    * Token Authorizer
    */
