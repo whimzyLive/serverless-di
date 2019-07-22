@@ -41,7 +41,7 @@ export const bootstrapController = async (event: any, ctx: any, { container, key
     case EventSource.ApiGatewayAwsProxy: {
       const formattedEvent = exhumerApiGatewayProxy(event);
       const res = await executeApiGatewayProxyFunction(controller, ctx, formattedEvent);
-      console.log(typeof res === 'object' ? JSON.stringify(res) : res);
+      console.log(JSON.stringify(res));
       return res;
     }
     default: {
