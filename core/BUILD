@@ -25,7 +25,8 @@ ts_library(
         "@npm//inversify",
         "@npm//reflect-metadata",
         "@npm//base-64",
-        "@npm//utf8"
+        "@npm//utf8",
+        "@npm//aws-sdk"
     ],
 )
 

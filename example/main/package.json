@@ -1,0 +1,20 @@
+{
+  "name": "example-app",
+  "version": "1.0.0",
+  "description": "Example app demonstrating basic use of serverless-di",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "keywords": [
+    "bazel",
+    "serverless-di",
+    "aws",
+    "serverless",
+    "nodejs",
+    "DI"
+  ],
+  "author": "Rushi Patel",
+  "license": "ISC"
+}
