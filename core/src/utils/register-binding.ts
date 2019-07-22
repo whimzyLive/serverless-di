@@ -1,5 +1,5 @@
 import { DynamoDB } from '../aws/dynamoDB.service';
-import { AWS } from '../../../core/src/constants';
+import { AWS, SDK_CONFIG } from '../../../core/src/constants';
 import { GLOBALS, HANDLERS, CONTROLLERS, ENV } from '../../../core/src/constants';
 import { interfaces, ContainerModule, decorate, injectable, METADATA_KEY } from 'inversify';
 import { ICommon } from '../interfaces';
@@ -28,9 +28,21 @@ export function registerBindings(object: ICommon.Module) {
           break;
         }
         case 'config': {
-          bindings['config'] = setAwsConfig(object[prop]);
+          // load credentials into sdk
+          if (object[prop]['accessKeyId'] && object[prop]['secretAccessKey']) {
+            setAwsConfig(object.config);
+            bindings['config'] = new ContainerModule(bind => {
+              bind(SDK_CONFIG).toConstantValue(true);
+            });
+          } else {
+            console.warn(`No AWS config provided, some services may not work properly`);
+            bindings['config'] = new ContainerModule(bind => {
+              bind(SDK_CONFIG).toConstantValue(false);
+            });
+          }
           break;
         }
+
         default: {
           console.log(
             `${JSON.stringify(prop)} is not supported as a property of module, it will be ignored. `
