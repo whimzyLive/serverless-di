@@ -1,0 +1,13 @@
+{
+  "docker": { "mergeable": false },
+  "packageRules": {
+    "schedule": ["on the first day of the month"],
+    "excludePackageNames": [
+      "@bazel/bazel",
+      "@bazel/buildifier",
+      "@bazel/ibazel",
+      "@bazel/jasmine",
+      "@bazel/typescript"
+    ]
+  }
+}
