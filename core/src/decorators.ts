@@ -30,7 +30,7 @@ export function Controller(): any {
     });
     const controller = {
       target,
-      METHODS: _METHODS
+      methods: _METHODS
     };
     Reflect.defineMetadata(GLOBALS.SHARED_CONTROLLER, controller, target);
   };

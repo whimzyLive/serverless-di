@@ -33,7 +33,7 @@ export const bootstrapController = async (event: any, ctx: any, { container, key
   const eventType = detectEventType(event);
   const controller = {
     target: container.get(CONTROLLERS[key]['target']),
-    METHODS: container.get(CONTROLLERS[key]['METHODS'])
+    methods: container.get(CONTROLLERS[key]['methods'])
   };
   console.log(`eventType: ${eventType}`);
 

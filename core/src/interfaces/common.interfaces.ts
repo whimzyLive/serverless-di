@@ -12,7 +12,7 @@ export namespace ICommon {
     providers?: Array<any>;
     datasources?: Datasources; // Currently only supports dynamoDB,
     environment?: Array<string>;
-    config?: Config;
+    config?: Config; // Required if you wish to use services that needs to interact with aws sdk
   }
 
   export interface Datasources {
@@ -25,8 +25,8 @@ export namespace ICommon {
   }
 
   export interface Config {
-    ssm?: { path?: string; name: string };
-    env?: { accessIdKey: string; accessSecretKey: string };
+    accessKeyId: string;
+    secretAccessKey: string;
   }
 
   /**

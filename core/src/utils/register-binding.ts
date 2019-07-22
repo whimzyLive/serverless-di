@@ -3,6 +3,7 @@ import { AWS } from '../../../core/src/constants';
 import { GLOBALS, HANDLERS, CONTROLLERS, ENV } from '../../../core/src/constants';
 import { interfaces, ContainerModule, decorate, injectable, METADATA_KEY } from 'inversify';
 import { ICommon } from '../interfaces';
+import { setAwsConfig } from './common';
 
 export function registerBindings(object: ICommon.Module) {
   let bindings = <any>{};
@@ -27,7 +28,7 @@ export function registerBindings(object: ICommon.Module) {
           break;
         }
         case 'config': {
-          bindings['config'] = registerConfig(object[prop]);
+          bindings['config'] = setAwsConfig(object[prop]);
           break;
         }
         default: {
@@ -66,13 +67,6 @@ function registerEnvironment(envVars: string[]) {
       const key = (ENV[env] = Symbol.for(env));
       bind(key).toConstantValue(process.env[ENV] || '');
     });
-  });
-}
-
-function registerConfig(config: ICommon.Config) {
-  return new ContainerModule(bind => {
-    // TODO
-    // Fetch and set aws creds to aws sdk
   });
 }
 

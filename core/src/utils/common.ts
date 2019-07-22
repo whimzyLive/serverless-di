@@ -1,3 +1,6 @@
+import { config } from 'aws-sdk';
+import { ICommon } from '../interfaces';
+
 export function getMethodToExecute(path: string, params: any) {
   const pathArray = path.split('/');
   const pathTail = pathArray[pathArray.length - 1];
@@ -11,4 +14,9 @@ export function getMethodToExecute(path: string, params: any) {
       return Object.keys(params)[paramIndex];
     }
   }
+}
+
+export function setAwsConfig(conf: ICommon.Config) {
+  config.accessKeyId = conf.accessKeyId;
+  config.secretAccessKey = conf.secretAccessKey;
 }
