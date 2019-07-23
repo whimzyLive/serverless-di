@@ -16,7 +16,7 @@
     "@bazel/bazel": "0.25.1",
     "@bazel/buildifier": "0.25.1",
     "@bazel/ibazel": "0.10.3",
-    "@bazel/jasmine": "0.29.2",
+    "@bazel/jasmine": "0.34.0",
     "@bazel/typescript": "0.29.0",
     "@types/jasmine": "3.3.14",
     "@types/mocha": "5.2.7",
