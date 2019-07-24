@@ -22,7 +22,7 @@
     "@types/mocha": "5.2.7",
     "@types/node": "11.13.18",
     "@types/utf8": "2.1.6",
-    "aws-sdk": "2.496.0",
+    "aws-sdk": "2.499.0",
     "jasmine": "3.4.0",
     "mem": "5.1.1",
     "mocha": "6.2.0",
