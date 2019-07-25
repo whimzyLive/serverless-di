@@ -28,7 +28,8 @@ export function registerBindings(object: ICommon.Module) {
           break;
         }
         case 'config': {
-          bindings['config'] = setAwsConfig(object[prop]);
+          // Set aws config to sdk
+          setAwsConfig(object[prop]);
           break;
         }
         default: {
