@@ -1,0 +1,198 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: AWS Cognito-identity template
+Parameters:
+  AppName:
+    Type: String
+    Description: App name to be used for as a prefix for resources for this app
+    Default: 'richmond-pizzeria'
+  Environment:
+    Type: String
+    Description: App Environment
+    Default: 'test'
+  ConsumersGroupName:
+    Type: String
+    Description: Consumer Userpool Consumer Group name
+    Default: 'Dev-Richmond-pizzeria-UserPoolGroup-Consumers'
+  AdminsGroupName:
+    Type: String
+    Description: Consumer Userpool Admins Group name
+    Default: 'Dev-Richmond-pizzeria-UserPoolGroup-Admins'
+  OwnersGroupName:
+    Type: String
+    Description: Consumer Userpool Owners Group name
+    Default: 'Dev-Richmond-pizzeria-UserPoolGroup-Owners'
+  ConsumersUserPoolClientId:
+    Type: String
+    Description: Consumer Userpool client Id
+    Default: '73fh1focb328oqc126ok2msj8v'
+
+Globals:
+  Function:
+    Runtime: nodejs8.10
+    Timeout: 180
+
+###############
+## Resources ##
+###############
+Resources:
+  ConsumerUserPool:
+    Type: 'AWS::Cognito::UserPool'
+    Properties:
+      UserPoolName: !Sub ${Environment}-${AppName}-user-pool
+      AutoVerifiedAttributes:
+        - email
+        - phone_number
+      UsernameAttributes:
+        - email
+        - phone_number
+      MfaConfiguration: 'OPTIONAL' # Change this to 'ON' Since we would only want verified users to access this
+      SmsConfiguration:
+        SnsCallerArn: !GetAtt SNSRole.Arn # Uses this sns role to send notifications to user
+      Schema:
+        - Name: given_name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: family_name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: birthdate
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+        - Name: email
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: phone_number
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: address
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+      LambdaConfig:
+        PostConfirmation: !Sub
+          - arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${PostConfirmation}
+          - PostConfirmation: !Ref PostConfirmationConsumerPool
+      # Fix circular dependency
+  ConsumerUserPoolClient:
+    Type: 'AWS::Cognito::UserPoolClient'
+    Properties:
+      ClientName: !Sub ${Environment}-${AppName}-client
+      GenerateSecret: false
+      UserPoolId: !Ref ConsumerUserPool
+  UserPoolGroupForOwners:
+    Type: 'AWS::Cognito::UserPoolGroup'
+    Properties:
+      Description: 'UserPoolGroup for Owners of applications'
+      GroupName: !Sub '${Environment}-${AppName}-UserPoolGroup-Owners'
+      Precedence: 0
+      UserPoolId: !Ref ConsumerUserPool
+  UserPoolGroupForAdmins:
+    Type: 'AWS::Cognito::UserPoolGroup'
+    Properties:
+      Description: 'UserPoolGroup for Admins of applications'
+      GroupName: !Sub '${Environment}-${AppName}-UserPoolGroup-Admins'
+      Precedence: 1
+      UserPoolId: !Ref ConsumerUserPool
+  UserPoolGroupForConsumers:
+    Type: 'AWS::Cognito::UserPoolGroup'
+    Properties:
+      Description: 'UserPoolGroup for Consumers of applications'
+      GroupName: !Sub '${Environment}-${AppName}-UserPoolGroup-Consumers'
+      Precedence: 2
+      UserPoolId: !Ref ConsumerUserPool
+  UserPoolLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      Principal: cognito-idp.amazonaws.com
+      FunctionName: !Ref PostConfirmationConsumerPool
+      SourceArn: !Sub
+        - 'arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${ConsumerUserPool}'
+        - ConsumerUserPool: !Ref ConsumerUserPool
+  SNSRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service:
+                - 'cognito-idp.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'CognitoSNSPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action: 'sns:publish'
+                Resource: '*'
+  UserGroupManagementRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub '${Environment}-${AppName}-User-Group-Management'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'cognito-idp:AdminAddUserToGroup'
+                  - 'cognito-idp:AdminRemoveUserFromGroup'
+                Resource: !Sub 'arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/*'
+  # Envs for postConfirmationConusmerPool must come from config file,
+  # Depending directly onto resources will cause circular dependencies prob
+  PostConfirmationConsumerPool:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: !Sub '${Environment}-${AppName}-AutoGroupAttach-Consumer'
+      CodeUri: main/
+      Handler: bundle.PostConfirmationConsumerPool
+      Role: !Sub
+        - 'arn:aws:iam::${AWS::AccountId}:role/${UserGroupManagementRole}'
+        - UserGroupManagementRole: !Ref UserGroupManagementRole
+      Environment:
+        Variables:
+          ConsumersGroup: !Ref ConsumersGroupName
+          AdminsGroup: !Ref AdminsGroupName
+          OwnersGroup: !Ref OwnersGroupName
+          ConsumersUserPoolClient: !Ref ConsumersUserPoolClientId
+      Policies:
+        - CloudWatchPutMetricPolicy: {}
+  Authorizer:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: !Sub '${Environment}-${AppName}-Authorizer'
+      CodeUri: main/
+      Handler: bundle.Authorizer
+      Environment:
+        Variables:
+          UserpoolId: !Ref ConsumerUserPool
+          ConsumersGroup: !Ref ConsumersGroupName
+          AdminsGroup: !Ref AdminsGroupName
+          OwnersGroup: !Ref OwnersGroupName
+      Policies:
+        - CloudWatchPutMetricPolicy: {}
+Outputs:
+  SnsPublishRoleOutput:
+    Value: !GetAtt SNSRole.Arn
+  AuthorizerOutput:
+    Value: !GetAtt Authorizer.Arn

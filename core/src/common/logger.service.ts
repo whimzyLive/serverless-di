@@ -6,7 +6,7 @@ export class Logger {
     console.log({
       message,
       createdAt: new Date().toLocaleString(),
-      data: typeof data === 'string' ? data : JSON.stringify(data),
+      data: typeof data === 'string' ? data : JSON.stringify(data)
     });
   }
   error(message: string, error?: any) {
@@ -18,7 +18,7 @@ export class Logger {
       }#logEventViewer:group=${process.env.AWS_LAMBDA_LOG_GROUP_NAME};stream=${
         process.env.AWS_LAMBDA_LOG_STREAM_NAME
       }`,
-      error: typeof error === 'string' ? error : JSON.stringify(error),
+      error: typeof error === 'string' ? error : JSON.stringify(error)
     });
   }
 }

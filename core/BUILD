@@ -8,9 +8,12 @@ ts_library(
     srcs = glob(
         [
             "src/**/*.ts",
-            "index.ts",
+            "*.ts",
         ],
         exclude = [
+            '*.spec.ts',
+            '*.test.ts',
+            '*.e2e.ts',
             "src/**/*.test.ts",
             "src/**/*.spec.ts",
             "src/**/*.e2e.ts",
@@ -18,12 +21,12 @@ ts_library(
     ),
     module_name = "@serverless-di/core",
     deps = [
-        "//common:library",
         "@npm//@types/node",
         "@npm//inversify",
         "@npm//reflect-metadata",
         "@npm//base-64",
-        "@npm//utf8"
+        "@npm//utf8",
+        "@npm//aws-sdk"
     ],
 )
 
@@ -32,7 +35,9 @@ ts_library(
     name = "e2e",
     testonly = True,
     srcs = glob([
-        "index.spec.ts",
+        '*.spec.ts',
+        '*.test.ts',
+        '*.e2e.ts',
         "src/**/*.test.ts",
         "src/**/*.spec.ts",
         "src/**/*.e2e.ts",

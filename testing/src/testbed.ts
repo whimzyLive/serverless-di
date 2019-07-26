@@ -2,15 +2,20 @@ import 'reflect-metadata';
 import {
   ICommon,
   registerBindings,
-  Handlers,
-  _verifiedProvider,
-  Controllers,
-} from '@serverless-di/common';
+  HANDLERS,
+  verifyProvider,
+  CONTROLLERS,
+  container
+} from '@serverless-di/core';
 import { Container, ContainerModule } from 'inversify';
-import { container } from '@serverless-di/core';
 export class TestBed {
-  private static _bindings: { declarations: ContainerModule; providers: ContainerModule };
+  private static _bindings: {
+    declarations: ContainerModule;
+    providers: ContainerModule;
+    ENVironment: ContainerModule;
+  };
   private static _module: ICommon.Module;
+  // create child container for inner scoped binding
   static _container: Container = container;
 
   static configureTestingModule(module: ICommon.Module) {
@@ -23,10 +28,10 @@ export class TestBed {
   }
 
   static getHandler(name: string): ICommon.Handler {
-    return TestBed._container.get(Handlers[name]);
+    return TestBed._container.get(HANDLERS[name]);
   }
   static getController(name: string) {
-    return TestBed._container.get(Controllers[name]['target']);
+    return TestBed._container.get(CONTROLLERS[name]['target']);
   }
   static get(key: any) {
     return TestBed._container.get(key);
@@ -41,20 +46,19 @@ export class TestBed {
       if (existingBinding) {
         TestBed._container.unbind(provider);
       }
-      const verifiedProvider = _verifiedProvider({
+      const verifiedProvider = verifyProvider({
         provide: provider,
-        useValue: newValue.useValue,
+        useValue: newValue.useValue
       });
       const { key, value } = verifiedProvider;
       TestBed._container.bind(key).to(value);
     }
   }
-  //
 
   static reset() {
     TestBed._container.unload(TestBed._bindings.declarations);
     // TestBed._container.unload(TestBed._bindings.providers);
-    // Add temporary fix for unbinding providers
+    // Add  fix for unbinding providers
     !!TestBed._module && !!TestBed._module.providers && !!TestBed._module.providers.length
       ? TestBed._module.providers.forEach(provider => {
           if (typeof provider === 'object') {
