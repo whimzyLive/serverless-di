@@ -1,9 +1,6 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "strictPropertyInitialization": false,
-    "baseUrl": ".",
-    "strict": true,
     "lib": ["es2015.promise", "dom", "es5", "es6"],
     // Include the output directory in rootDirs so that generated .d.ts files
     // can be used for type-checking in the editor, for example the car.proto
@@ -12,9 +9,9 @@
     // Explicitly set types settings so typescript doesn't auto-discover types.
     // If all types are discovered then all types need to be included as deps
     // or typespt may error out with TS2688: Cannot find type definition file for 'foo'.
+    "baseUrl": ".",
     "typeRoots": ["node_modules/@types"],
     "types": ["node", "jasmine"],
-    "noImplicitAny": false,
     "paths": {
       "@serverless-di/core": ["../../core"],
       "@serverless-di/testing": ["../../testing"]

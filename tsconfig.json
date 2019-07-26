@@ -5,6 +5,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictNullChecks": false,
+    "strictPropertyInitialization": false,
     "noImplicitAny": false
   }
 }

@@ -15,11 +15,7 @@ ts_library(
         ["src/**/*.ts", "*.ts"],
         exclude = [
             "*.spec.ts",
-            "*.test.ts",
-            "*.e2e.ts",
-            "src/**/*.test.ts",
             "src/**/*.spec.ts",
-            "src/**/*.e2e.ts",
         ],
     ),
     tsconfig = "//:tsconfig.json",
@@ -36,11 +32,7 @@ ts_library(
     testonly = True,
     srcs = glob([
         "*.spec.ts",
-        "*.test.ts",
-        "*.e2e.ts",    
-        "src/**/*.test.ts",
         "src/**/*.spec.ts",
-        "src/**/*.e2e.ts",
     ]),
     tsconfig = "//:tsconfig.json",
     deps = [
@@ -66,8 +58,6 @@ rollup_bundle(
     srcs = glob(
         ["**/*.js"],
         exclude = [
-            "*.test.js",
-            "*.e2e.js",
             "*.spec.js",
         ],
     ),
