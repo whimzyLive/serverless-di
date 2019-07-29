@@ -1,4 +1,4 @@
-import { config } from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { ICommon } from '../interfaces';
 
 export function getMethodToExecute(path: string, params: any) {
@@ -17,6 +17,8 @@ export function getMethodToExecute(path: string, params: any) {
 }
 
 export function setAwsConfig(conf: ICommon.Config) {
-  config.accessKeyId = conf.accessKeyId;
-  config.secretAccessKey = conf.secretAccessKey;
+  AWS.config.credentials = conf.credentials;
+  AWS.config.region = conf.region;
+  AWS.config.apiVersion = conf.apiVersion;
+  AWS.config.apiVersions = conf.apiVersions;
 }

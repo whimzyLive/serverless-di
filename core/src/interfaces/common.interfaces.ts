@@ -1,3 +1,5 @@
+import { APIVersions } from 'aws-sdk/lib/config';
+
 export namespace ICommon {
   /**
    * Modules are used to make different services, classes available within a singal container
@@ -24,9 +26,9 @@ export namespace ICommon {
     region: string;
   }
 
-  export interface Config {
-    accessKeyId: string;
-    secretAccessKey: string;
+  export interface Config extends APIVersions {
+    credentials: { accessKeyId: string; secretAccessKey: string };
+    region: string;
   }
 
   /**

@@ -22,6 +22,11 @@ export const ENV = <any>{};
 export const UTILS = {
   Logger: Symbol.for('Logger')
 };
+
 export const AWS = {
-  DynamoDB: Symbol.for('DynamoDB')
+  Table: Symbol.for('Table')
+};
+
+export const INTERNAL = {
+  Table: Symbol.for('Table')
 };

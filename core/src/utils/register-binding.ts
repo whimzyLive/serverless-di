@@ -1,5 +1,6 @@
-import { DynamoDB } from '../aws/dynamoDB.service';
-import { AWS, SDK_CONFIG } from '../../../core/src/constants';
+import { INTERNAL } from './../constants/tokens';
+import { Table } from '../aws/table.service';
+import { SDK_CONFIG, AWS } from '../../../core/src/constants';
 import { GLOBALS, HANDLERS, CONTROLLERS, ENV } from '../../../core/src/constants';
 import { interfaces, ContainerModule, decorate, injectable, METADATA_KEY } from 'inversify';
 import { ICommon } from '../interfaces';
@@ -102,9 +103,7 @@ function _bindDeclarations(declarations: any[], bind: interfaces.Bind) {
       bind(METHODSKey).toConstantValue(controller['METHODS']);
     } else {
       throw new Error(
-        `${
-          declaration.name
-        } is not a valid Handler or controller, Make sure that class has "@Handler" or "@Controller" decorator.`
+        `${declaration.name} is not a valid Handler or controller, Make sure that class has "@Handler" or "@Controller" decorator.`
       );
     }
   });
@@ -128,10 +127,14 @@ function _bindProviders(providers: any[], bind: interfaces.Bind) {
 }
 
 function _bindDynamoDBTables(dynamoTables: Array<ICommon.Table>, bind: interfaces.Bind) {
+  bind(INTERNAL.Table).to(Table);
   dynamoTables.forEach(table => {
-    bind(AWS.DynamoDB)
-      .toFactory(() => {
-        return () => new DynamoDB(table.name, table.region);
+    bind(AWS.Table)
+      .toFactory(ctx => {
+        const dbTable: Table = ctx.container.get(INTERNAL.Table);
+        dbTable.name = table.name;
+        dbTable.region = table.region;
+        return () => dbTable;
       })
       .whenTargetNamed(table.name);
   });

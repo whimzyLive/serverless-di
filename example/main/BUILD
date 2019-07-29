@@ -61,7 +61,7 @@ rollup_bundle(
             "*.spec.js",
         ],
     ),
-    entry_point = "example//main/src/index.js",
+    entry_point = "example/main/src/index.js",
     global_name = "exports",
     globals = {
         "inversify": "require(\"inversify\")",
