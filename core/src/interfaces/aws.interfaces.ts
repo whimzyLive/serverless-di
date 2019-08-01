@@ -39,7 +39,7 @@ export namespace IAWS {
     response: {};
   }
 
-  export interface DynamoDB {
+  export interface Table {
     name: string;
     region: string;
   }

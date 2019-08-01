@@ -22,7 +22,7 @@ export function registerBindings(object: ICommon.Module) {
           break;
         }
         case 'datasources': {
-          bindings['datasources'] = registerDatasources(object[prop]);
+          bindings['datasources'] = registerDatasources(object[prop], object.config);
           break;
         }
         case 'environment': {
@@ -68,10 +68,10 @@ function registerProviders(providers: any[]) {
   });
 }
 
-function registerDatasources(datasources: ICommon.Datasources) {
+function registerDatasources(datasources: ICommon.Datasources, config: ICommon.Config) {
   return new ContainerModule(bind => {
     // Currently only handles dynamoDB tables
-    _bindDynamoDBTables(datasources.dynamoDB, bind);
+    _bindDynamoDBTables(datasources.dynamoDB, bind, config);
   });
 }
 
@@ -127,7 +127,11 @@ function _bindProviders(providers: any[], bind: interfaces.Bind) {
   });
 }
 
-function _bindDynamoDBTables(dynamoTables: Array<ICommon.Table>, bind: interfaces.Bind) {
+function _bindDynamoDBTables(
+  dynamoTables: Array<ICommon.Table>,
+  bind: interfaces.Bind,
+  config: ICommon.Config
+) {
   bind(INTERNAL.Table).to(Table);
   dynamoTables.forEach(table => {
     // This will return a dynamoTable instance with gitven configuration
@@ -135,7 +139,7 @@ function _bindDynamoDBTables(dynamoTables: Array<ICommon.Table>, bind: interface
       .toFactory(ctx => {
         const dbTable: Table = ctx.container.get(INTERNAL.Table);
         dbTable.name = table.name;
-        dbTable.region = table.region;
+        dbTable.region = table.region || config.region;
         return () => dbTable;
       })
       .whenTargetNamed(table.name);

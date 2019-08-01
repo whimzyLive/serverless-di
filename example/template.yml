@@ -6,8 +6,11 @@ Parameters:
   AppName:
     Type: String
     Description: App name to be used for as a prefix for resources for this app
-    Default: 'example-serverless-di'
-
+    Default: 'example'
+  EnvironmentName:
+    Type: String
+    Description: App Environment
+    Default: dev
 Globals:
   Function:
     Runtime: nodejs8.10
@@ -22,3 +25,16 @@ Resources:
     Properties:
       CodeUri: ./main
       DefinitionUri: bundle.PostCustomerOrders
+  OrdersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${EnvironmentName}-${AppName}-orders
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: date
+          KeyType: RANGE
