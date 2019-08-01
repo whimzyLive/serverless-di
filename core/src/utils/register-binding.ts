@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { INTERNAL } from './../constants/tokens';
 import { Table } from '../aws/table.service';
 import { SDK_CONFIG, AWS } from '../../../core/src/constants';
