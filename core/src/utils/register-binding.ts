@@ -36,7 +36,7 @@ export function registerBindings(object: ICommon.Module) {
               bind(SDK_CONFIG).toConstantValue(true);
             });
           } else {
-            console.warn(`No AWS config provided, some services may not work properly`);
+            console.warn(`No AWS config provided, some services may not work properly!`);
             bindings['config'] = new ContainerModule(bind => {
               bind(SDK_CONFIG).toConstantValue(false);
             });
@@ -129,6 +129,7 @@ function _bindProviders(providers: any[], bind: interfaces.Bind) {
 function _bindDynamoDBTables(dynamoTables: Array<ICommon.Table>, bind: interfaces.Bind) {
   bind(INTERNAL.Table).to(Table);
   dynamoTables.forEach(table => {
+    // This will return a dynamoTable instance with gitven configuration
     bind(AWS.Table)
       .toFactory(ctx => {
         const dbTable: Table = ctx.container.get(INTERNAL.Table);
