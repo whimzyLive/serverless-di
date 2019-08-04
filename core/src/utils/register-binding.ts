@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { INTERNAL } from './../constants/tokens';
 import { Table } from '../aws/table.service';
 import { SDK_CONFIG, AWS } from '../../../core/src/constants';
 import { GLOBALS, HANDLERS, CONTROLLERS, ENV } from '../../../core/src/constants';
@@ -132,15 +131,13 @@ function _bindDynamoDBTables(
   bind: interfaces.Bind,
   config: ICommon.Config
 ) {
-  bind(INTERNAL.Table).to(Table);
   dynamoTables.forEach(table => {
     // This will return a dynamoTable instance with gitven configuration
     bind(AWS.Table)
-      .toFactory(ctx => {
-        const dbTable: Table = ctx.container.get(INTERNAL.Table);
-        dbTable.name = table.name;
-        dbTable.region = table.region || config.region;
-        return () => dbTable;
+      .toDynamicValue(() => {
+        const dbTable: Table = new Table();
+        dbTable.init(table.name, table.region || config.region, table.partitionKey, table.sortKey);
+        return dbTable;
       })
       .whenTargetNamed(table.name);
   });

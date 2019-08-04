@@ -2,9 +2,7 @@ import { Controller, Post, inject, AWS, named, ICommon } from '@serverless-di/co
 
 @Controller()
 export class PostCustomerOrders {
-  constructor(
-    @inject(AWS.Table) @named('dev-example-orders') public ordersTable: () => ICommon.Table
-  ) {}
+  constructor(@inject(AWS.Table) @named('dev-example-orders') public ordersTable: ICommon.Table) {}
   @Post()
   async postCustomerOrders(event: any) {
     const { body } = event;

@@ -24,6 +24,22 @@ export namespace ICommon {
   export interface Table {
     name: string;
     region: string;
+    partitionKey: PartitionKey;
+    sortKey: SortKey;
+  }
+
+  export interface PartitionKey {
+    name: string;
+  }
+
+  export interface SortKey {
+    name: string;
+    required?: boolean;
+    default?: string;
+  }
+
+  export interface TableOptions {
+    strict: boolean;
   }
 
   export interface Config extends APIVersions {
