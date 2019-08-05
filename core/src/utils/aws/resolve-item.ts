@@ -47,21 +47,35 @@ function _resolveType(type: string, val?: any) {
     }
     case 'array': {
       if (val && val.length) {
-        const type = _detectType(val);
+        const types: Array<string> = val.map(el => _detectType(val));
+        const type = types.reduce((acc, curr) => {
+          if (acc !== 'L') {
+            if (curr !== acc) {
+              return 'L';
+            } else {
+              return curr;
+            }
+          } else {
+            return acc;
+          }
+        }, types[0]);
+
+        let arrayType;
         switch (type) {
           case 'S': {
-            return 'SS';
+            arrayType = 'SS';
           }
           case 'N': {
-            return 'NS';
+            arrayType = 'NS';
           }
           case 'B': {
-            return 'BS';
+            arrayType = 'BS';
           }
           default: {
-            return 'L';
+            arrayType = 'L';
           }
         }
+        return { arrayType: types };
       } else {
         return 'L';
       }
