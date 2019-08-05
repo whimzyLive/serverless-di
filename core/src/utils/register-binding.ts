@@ -136,7 +136,7 @@ function _bindDynamoDBTables(
     bind(AWS.Table)
       .toDynamicValue(() => {
         const dbTable: Table = new Table();
-        dbTable.init(table.name, table.region || config.region, table.partitionKey, table.sortKey);
+        dbTable.init(table.name, table.region || config.region, table.primaryKeys, table.options);
         return dbTable;
       })
       .whenTargetNamed(table.name);

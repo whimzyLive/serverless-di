@@ -1,3 +1,4 @@
+import { DOCUMENT_CLIENT } from './../constants/default';
 import { ICommon } from '@serverless-di/core';
 import { isValidDynamoItem, createDynamoItem } from '../utils/aws';
 import { injectable } from 'inversify';
@@ -8,32 +9,40 @@ import { strict } from 'assert';
 export class Table {
   name: string;
   region: string;
-  partitionKey: ICommon.PartitionKey;
-  sortKey: ICommon.SortKey;
+  primaryKeys: ICommon.PrimaryKeys;
   options: ICommon.TableOptions = <any>{}; // By default strict is turned off
   constructor() {}
 
   init(
     name: string,
     region: string,
-    partitionKey: ICommon.PartitionKey,
-    sortKey: ICommon.SortKey,
+    primaryKeys: ICommon.PrimaryKeys,
     options?: ICommon.TableOptions
   ) {
     this.name = name;
     this.region = region;
-    this.partitionKey = partitionKey;
-    this.sortKey = sortKey;
-    this.options.strict = false;
+    this.primaryKeys = primaryKeys;
+    this.options.strict = options.strict || false;
+    this.options.returnConsumedCapacity = options.returnConsumedCapacity || 'TOTAL';
+    this.options.returnItemCollectionMetrics = options.returnItemCollectionMetrics || 'NONE';
+    this.options.returnValues = options.returnValues || 'ALL_NEW';
   }
   /**
    *
-   * @param partitionKeyName Table Partition Key `name`
    * @param payload Data to put against given partitionKey
    * @param options Configuration Options
    */
-  async putAll(payload: Array<any>, options: { strict?: boolean }) {
+  async putAll(
+    payload: Array<any>,
+    options?: {
+      strict?: boolean;
+      returnConsumedCapacity?: 'INDEXES' | 'TOTAL' | 'NONE';
+      returnItemCollectionMetrics?: 'SIZE' | 'NONE';
+      returnValues?: 'NONE' | 'ALL_OLD' | 'UPDATED_OLD' | 'ALL_NEW' | 'UPDATED_NEW';
+    }
+  ) {
     // if no strict provided use default value for strict
+
     if (!options.strict) {
       options.strict = this.options.strict;
     }
@@ -42,7 +51,7 @@ export class Table {
 
     payload.reduce((acc, curr) => {
       // Verify item, if valid item return otherwise
-      if (isValidDynamoItem(this.partitionKey.name, curr)) {
+      if (isValidDynamoItem(this.primaryKeys, curr)) {
         acc.valid.push(curr);
       } else {
         acc.invalid.push(curr);
@@ -51,7 +60,7 @@ export class Table {
     }, items);
 
     if (items.invalid.length && options.strict) {
-      throw new Error('Could not process items, one or more item is invalid');
+      throw new Error('Could not process items, one or more items are invalid');
     }
 
     const putRequests = items.valid.reduce((accu, curr) => {

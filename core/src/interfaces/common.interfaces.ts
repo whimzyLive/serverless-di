@@ -24,8 +24,14 @@ export namespace ICommon {
   export interface Table {
     name: string;
     region: string;
-    partitionKey: PartitionKey;
+    primaryKeys: PrimaryKeys;
     sortKey: SortKey;
+    options?: TableOptions;
+  }
+
+  export interface PrimaryKeys {
+    partitionKey: ICommon.PartitionKey;
+    sortKey?: ICommon.SortKey;
   }
 
   export interface PartitionKey {
@@ -39,12 +45,19 @@ export namespace ICommon {
   }
 
   export interface TableOptions {
-    strict: boolean;
+    strict?: boolean;
+    returnConsumedCapacity?: 'INDEXES' | 'TOTAL' | 'NONE';
+    returnItemCollectionMetrics?: 'SIZE' | 'NONE';
+    returnValues?: 'NONE' | 'ALL_OLD' | 'UPDATED_OLD' | 'ALL_NEW' | 'UPDATED_NEW';
   }
 
   export interface Config extends APIVersions {
     credentials?: { accessKeyId: string; secretAccessKey: string }; // Required if you wish to use services that needs to interact with aws sdk
     region: string;
+  }
+
+  export interface Condition {
+    where: {};
   }
 
   /**
