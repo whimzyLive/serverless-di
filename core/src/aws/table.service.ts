@@ -1,9 +1,7 @@
-import { DOCUMENT_CLIENT } from './../constants/default';
 import { ICommon } from '@serverless-di/core';
 import { isValidDynamoItem, createDynamoItem } from '../utils/aws';
 import { injectable } from 'inversify';
 import * as AWS from 'aws-sdk';
-import { strict } from 'assert';
 
 @injectable()
 export class Table {
