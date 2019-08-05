@@ -3,25 +3,29 @@ export function createDynamoItem(curr: any) {
   return {};
 }
 
-function detectType(item: any) {
+function format(item) {
+  // format item
+}
+
+function _detectType(item: any) {
   if (typeof item === 'string') {
-    return resolveType('string');
+    return _resolveType('string');
   } else if (typeof item === 'number') {
-    return resolveType('number');
+    return _resolveType('number');
   } else if (typeof item === 'boolean') {
-    return resolveType('boolean');
+    return _resolveType('boolean');
   } else if (item instanceof Buffer) {
-    return resolveType('buffer');
+    return _resolveType('buffer');
   } else if (item instanceof Array) {
-    return resolveType('array', item);
+    return _resolveType('array', item);
   } else if (item instanceof Object) {
-    return resolveType('object');
+    return _resolveType('object');
   } else if (item === null) {
-    return resolveType('null');
+    return _resolveType('null');
   }
 }
 
-function resolveType(type: string, val?: any) {
+function _resolveType(type: string, val?: any) {
   switch (type) {
     case 'string': {
       return 'S';
@@ -43,7 +47,7 @@ function resolveType(type: string, val?: any) {
     }
     case 'array': {
       if (val && val.length) {
-        const type = detectType(val);
+        const type = _detectType(val);
         switch (type) {
           case 'S': {
             return 'SS';
