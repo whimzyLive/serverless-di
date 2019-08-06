@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["es2015.promise", "dom", "es5", "es6"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     // Include the output directory in rootDirs so that generated .d.ts files
     // can be used for type-checking in the editor, for example the car.proto
     // produces a car.d.ts.

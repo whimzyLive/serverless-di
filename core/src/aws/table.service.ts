@@ -64,7 +64,7 @@ export class Table {
     const putRequests = items.valid.reduce((accu, curr) => {
       const requestItem = {
         PutRequest: {
-          Item: createDynamoItem(curr)
+          Item: curr
         }
       };
       accu.push(requestItem);
