@@ -1,10 +1,12 @@
-export function createDynamoItem(curr: any) {
-  // create dynamo item and return
-  return {};
-}
-
-function format(item) {
-  // format item
+export function createDynamoItem(item: any) {
+  const craftedItem = {};
+  Reflect.ownKeys(item).forEach(key => {
+    const type = _detectType(item[key]);
+    craftedItem[key] = {
+      [type]: item[key]
+    };
+  });
+  return craftedItem;
 }
 
 function _detectType(item: any) {
@@ -47,7 +49,11 @@ function _resolveType(type: string, val?: any) {
     }
     case 'array': {
       if (val && val.length) {
-        const types: Array<string> = val.map(el => _detectType(val));
+        debugger;
+        const types: Array<string> = val.map(el => {
+          return _detectType(el);
+        });
+        debugger;
         const type = types.reduce((acc, curr) => {
           if (acc !== 'L') {
             if (curr !== acc) {
@@ -60,22 +66,22 @@ function _resolveType(type: string, val?: any) {
           }
         }, types[0]);
 
-        let arrayType;
+        debugger;
+
         switch (type) {
           case 'S': {
-            arrayType = 'SS';
+            return 'SS';
           }
           case 'N': {
-            arrayType = 'NS';
+            return 'NS';
           }
           case 'B': {
-            arrayType = 'BS';
+            return 'BS';
           }
           default: {
-            arrayType = 'L';
+            return 'L';
           }
         }
-        return { arrayType: types };
       } else {
         return 'L';
       }

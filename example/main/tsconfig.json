@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "lib": ["es2015.promise", "dom", "es5", "es6"],
     // Include the output directory in rootDirs so that generated .d.ts files

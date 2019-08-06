@@ -1,7 +1,7 @@
-import { ICommon } from '@serverless-di/core';
 import { isValidDynamoItem, createDynamoItem } from '../utils/aws';
 import { injectable } from 'inversify';
 import * as AWS from 'aws-sdk';
+import { ICommon } from '../interfaces';
 
 @injectable()
 export class Table {
@@ -38,7 +38,7 @@ export class Table {
       returnItemCollectionMetrics?: 'SIZE' | 'NONE';
       returnValues?: 'NONE' | 'ALL_OLD' | 'UPDATED_OLD' | 'ALL_NEW' | 'UPDATED_NEW';
     }
-  ) {
+  ): Promise<any> {
     // if no strict provided use default value for strict
 
     if (!options.strict) {
