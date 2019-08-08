@@ -6,12 +6,12 @@ import {
   executeCustomFunction,
   executeApiGatewayProxyFunction
 } from './executor';
-import { ICommon } from './interfaces';
+import { ICore } from './interfaces';
 import { HANDLERS, CONTROLLERS } from './constants';
 
 export const bootstrapHandler = async function(event: any, ctx: any, { container, key }) {
   const eventType = detectEventType(event);
-  const handler: ICommon.Handler = container.get(HANDLERS[key]);
+  const handler: ICore.Handler = container.get(HANDLERS[key]);
 
   switch (eventType) {
     case EventSource.ApiGatewayAuthorizer: {

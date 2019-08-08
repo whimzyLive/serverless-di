@@ -1,11 +1,7 @@
 import { getMethodToExecute } from './utils';
-import { ICommon } from './interfaces';
+import { ICore } from './interfaces';
 
-export const executeAuthoriserFunction = async (
-  handler: ICommon.Handler,
-  ctx: any,
-  payload: any
-) => {
+export const executeAuthoriserFunction = async (handler: ICore.Handler, ctx: any, payload: any) => {
   try {
     return await handler.run(payload);
   } catch (err) {
@@ -43,18 +39,14 @@ export const executeApiGatewayProxyFunction = async (controller: any, ctx: any, 
         return {
           statusCode: 400,
           body: JSON.stringify({
-            message: `Requested method <${incomingMethod}> does not exist on "${
-              target.constructor.name
-            }" controller.`
+            message: `Requested method <${incomingMethod}> does not exist on "${target.constructor.name}" controller.`
           })
         };
       } else {
         return {
           statusCode: 400,
           body: JSON.stringify({
-            message: `Requested method <${incomingMethod}/${methodTOExecute}> does not exist on <${
-              target.constructor.name
-            }> controller.`
+            message: `Requested method <${incomingMethod}/${methodTOExecute}> does not exist on <${target.constructor.name}> controller.`
           })
         };
       }
@@ -67,7 +59,7 @@ export const executeApiGatewayProxyFunction = async (controller: any, ctx: any, 
   }
 };
 
-export const executeCustomFunction = async (handler: ICommon.Handler, ctx: any, payload: any) => {
+export const executeCustomFunction = async (handler: ICore.Handler, ctx: any, payload: any) => {
   try {
     return await handler.run(payload);
   } catch (err) {

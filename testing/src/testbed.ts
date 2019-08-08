@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import {
   ICommon,
+  ICore,
   registerBindings,
   HANDLERS,
   verifyProvider,
@@ -27,7 +28,7 @@ export class TestBed {
     });
   }
 
-  static getHandler(name: string): ICommon.Handler {
+  static getHandler(name: string): ICore.Handler {
     return TestBed._container.get(HANDLERS[name]);
   }
   static getController(name: string) {
