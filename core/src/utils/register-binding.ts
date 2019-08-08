@@ -8,8 +8,9 @@ import { setAwsConfig } from './common';
 
 export function registerBindings(object: ICommon.Module) {
   let bindings = <any>{};
+  const keys = Reflect.ownKeys(object);
   Reflect.ownKeys(object).forEach(prop => {
-    if (object[prop].length) {
+    if (object[prop]) {
       // When there are values inside decorators
       switch (prop) {
         case 'declarations': {

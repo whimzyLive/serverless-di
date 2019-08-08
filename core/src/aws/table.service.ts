@@ -8,7 +8,12 @@ export class Table {
   name: string;
   region: string;
   primaryKeys: ICommon.PrimaryKeys;
-  options: ICommon.TableOptions = <any>{}; // By default strict is turned off
+  options: ICommon.TableOptions = {
+    strict: false,
+    returnConsumedCapacity: 'TOTAL',
+    returnItemCollectionMetrics: 'NONE',
+    returnValues: 'ALL_NEW'
+  };
   constructor() {}
 
   init(
@@ -20,10 +25,14 @@ export class Table {
     this.name = name;
     this.region = region;
     this.primaryKeys = primaryKeys;
-    this.options.strict = options.strict || false;
-    this.options.returnConsumedCapacity = options.returnConsumedCapacity || 'TOTAL';
-    this.options.returnItemCollectionMetrics = options.returnItemCollectionMetrics || 'NONE';
-    this.options.returnValues = options.returnValues || 'ALL_NEW';
+
+    if (options) {
+      Reflect.ownKeys(options).forEach(key => {
+        if (options[key]) {
+          this.options[key] = options[key];
+        }
+      });
+    }
   }
   /**
    *

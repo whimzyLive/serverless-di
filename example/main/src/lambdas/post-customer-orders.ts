@@ -15,7 +15,4 @@ export class PostCustomerOrders {
     console.log(reesult);
     return reesult;
   }
-
-  @Post('id')
-  async postCustomerOrdersById(event) {}
 }

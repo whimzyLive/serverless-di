@@ -49,11 +49,9 @@ function _resolveType(type: string, val?: any) {
     }
     case 'array': {
       if (val && val.length) {
-        debugger;
         const types: Array<string> = val.map(el => {
           return _detectType(el);
         });
-        debugger;
         const type = types.reduce((acc, curr) => {
           if (acc !== 'L') {
             if (curr !== acc) {
@@ -65,8 +63,6 @@ function _resolveType(type: string, val?: any) {
             return acc;
           }
         }, types[0]);
-
-        debugger;
 
         switch (type) {
           case 'S': {

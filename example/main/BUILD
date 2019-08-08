@@ -66,6 +66,7 @@ rollup_bundle(
     globals = {
         "inversify": "require(\"inversify\")",
         "reflect-metadata": "require(\"reflect-metadata\")",
+        'aws-sdk': 'require("aws-sdk")'
     },
     deps = [":src"],
 )
