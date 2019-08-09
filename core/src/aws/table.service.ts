@@ -1,4 +1,4 @@
-import { isValidDynamoItem, createDynamoItem } from '../utils/aws';
+import { isValidDynamoItem } from '../utils/aws';
 import { injectable } from 'inversify';
 import * as AWS from 'aws-sdk';
 import { ICommon } from '../interfaces';
