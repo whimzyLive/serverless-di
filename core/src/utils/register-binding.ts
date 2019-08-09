@@ -95,13 +95,14 @@ function _bindDeclarations(declarations: any[], bind: interfaces.Bind) {
     } else if (Reflect.hasOwnMetadata(GLOBALS.SHARED_CONTROLLER, declaration)) {
       CONTROLLERS[declaration.name] = {};
       // Add declaration to CONTROLLERS Identifier
+      // Need to only containe Name of declaration, since this will be used for filtering function to run
       const targetKey = (CONTROLLERS[declaration.name]['target'] = Symbol.for(declaration.name));
-      const METHODSKey = (CONTROLLERS[declaration.name]['METHODS'] = Symbol.for(
-        `${declaration.name}METHODS`
+      const methodsKey = (CONTROLLERS[declaration.name]['methods'] = Symbol.for(
+        `${declaration.name}Methods`
       ));
       const controller = Reflect.getOwnMetadata(GLOBALS.SHARED_CONTROLLER, declaration);
       bind(targetKey).to(controller['target']);
-      bind(METHODSKey).toConstantValue(controller['METHODS']);
+      bind(methodsKey).toConstantValue(controller['methods']);
     } else {
       throw new Error(
         `${declaration.name} is not a valid Handler or controller, Make sure that class has "@Handler" or "@Controller" decorator.`

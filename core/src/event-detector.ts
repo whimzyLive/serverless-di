@@ -15,7 +15,14 @@ export function detectEventType(event: any) {
 
   if (event.Records && event.Records[0].eventSource === 'aws:ses') return EventSource.Ses;
 
-  if (event.path && event.httpMethod && event.headers) return EventSource.ApiGatewayAwsProxy;
+  if (
+    event.hasOwnProperty('path') &&
+    event.hasOwnProperty('httpMethod') &&
+    event.hasOwnProperty('headers') &&
+    event.requestContext &&
+    event.requestContext.apiId
+  )
+    return EventSource.ApiGatewayAwsProxy;
 
   if (event.source === 'aws.events') return EventSource.ScheduledEvent;
 
