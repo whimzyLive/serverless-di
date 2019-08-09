@@ -8,9 +8,12 @@ ts_library(
     srcs = glob(
         [
             "src/**/*.ts",
-            "index.ts",
+            "*.ts",
         ],
         exclude = [
+            '*.spec.ts',
+            '*.test.ts',
+            '*.e2e.ts',
             "src/**/*.test.ts",
             "src/**/*.spec.ts",
             "src/**/*.e2e.ts",
@@ -18,7 +21,6 @@ ts_library(
     ),
     module_name = "@serverless-di/testing",
     deps = [
-        "//common:library",
         "//core:library",
         "@npm//@types/node",
         "@npm//inversify",
@@ -30,7 +32,9 @@ ts_library(
     name = "e2e",
     testonly = True,
     srcs = glob([
-        "index.spec.ts",
+        '*.spec.ts',
+        '*.test.ts',
+        '*.e2e.ts',
         "src/**/*.test.ts",
         "src/**/*.spec.ts",
         "src/**/*.e2e.ts",

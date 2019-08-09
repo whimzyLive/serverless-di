@@ -1,5 +1,4 @@
-import * as AWS from 'aws-sdk';
-export namespace IAws {
+export namespace IAWS {
   /**
    * Token Authorizer
    */
@@ -9,6 +8,9 @@ export namespace IAws {
     methodArn: string;
   }
 
+  /**
+   * Cognito Post confirmation trigger event payload
+   */
   export interface PostConfirmationTrigger {
     version: string;
     region: string;
@@ -35,5 +37,10 @@ export namespace IAws {
       };
     };
     response: {};
+  }
+
+  export interface Table {
+    name: string;
+    region: string;
   }
 }

@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Cognito-identity template
+
+Parameters:
+  AppName:
+    Type: String
+    Description: App name to be used for as a prefix for resources for this app
+    Default: 'example'
+  EnvironmentName:
+    Type: String
+    Description: App Environment
+    Default: dev
+Globals:
+  Function:
+    Runtime: nodejs8.10
+    Timeout: 180
+
+###############
+## Resources ##
+###############
+Resources:
+  PostCustomerOrders:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./main
+      Handler: bundle.PostCustomerOrders
+      FunctionName: !Sub ${EnvironmentName}-${AppName}
+      Policies:
+        - CloudWatchPutMetricPolicy: {}
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OrdersTable
+      Events:
+        PostOrders:
+          Type: Api
+          Properties:
+            Path: '/orders'
+            Method: Post
+  OrdersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${EnvironmentName}-${AppName}-orders
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      KeySchema:
+        - AttributeName: 'id'
+          KeyType: HASH
+        - AttributeName: 'date'
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: 'id'
+          AttributeType: 'S'
+        - AttributeName: 'date'
+          AttributeType: 'S'

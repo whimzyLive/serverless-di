@@ -39,6 +39,7 @@ load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
 node_repositories(
     package_json = [
         "//:package.json",
+        "//example/main:package.json"
     ],
 )
 

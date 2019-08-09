@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@serverless-di/core": ["../core"],
+      "@serverless-di/testing": ["../testing"]
+    }
+  }
+}
