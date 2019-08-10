@@ -1,3 +1,5 @@
+import { ICommon } from './common';
+
 export namespace IAWS {
   /**
    * Token Authorizer
@@ -40,7 +42,25 @@ export namespace IAWS {
   }
 
   export interface Table {
-    name: string;
-    region: string;
+    init(
+      name: string,
+      region: string,
+      primaryKeys: ICommon.PrimaryKeys,
+      options?: ICommon.TableOptions
+    ): void;
+    putAll(
+      payload: Array<any>,
+      options?: {
+        strict?: boolean;
+        returnConsumedCapacity?: 'INDEXES' | 'TOTAL' | 'NONE';
+        returnItemCollectionMetrics?: 'SIZE' | 'NONE';
+        returnValues?: 'NONE' | 'ALL_OLD' | 'UPDATED_OLD' | 'ALL_NEW' | 'UPDATED_NEW';
+      }
+    ): Promise<any>;
   }
+
+  /**
+   * Raw aws event
+   */
+  export interface AWS_EVENT {}
 }

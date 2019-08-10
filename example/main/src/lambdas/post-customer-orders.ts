@@ -1,8 +1,8 @@
-import { Controller, Post, inject, AWS, named, ICore } from '@serverless-di/core';
+import { Controller, Post, inject, AWS, named, IAWS } from '@serverless-di/core';
 
 @Controller()
 export class PostCustomerOrders {
-  constructor(@inject(AWS.Table) @named('dev-example-orders') public ordersTable: ICore.Table) {}
+  constructor(@inject(AWS.Table) @named('dev-example-orders') public ordersTable: IAWS.Table) {}
   @Post()
   async postCustomerOrders(event: any) {
     console.log(`Started PostCustomerOrders Function with event ${event}`);
