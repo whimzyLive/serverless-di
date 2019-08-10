@@ -25,10 +25,6 @@ export function registerBindings(object: ICommon.Module) {
           bindings['datasources'] = registerDatasources(object[prop], object.config);
           break;
         }
-        case 'environment': {
-          bindings['environment'] = registerEnvironment(object[prop]);
-          break;
-        }
         case 'config': {
           // load credentials into sdk
           if (object[prop]['accessKeyId'] && object[prop]['secretAccessKey']) {
@@ -72,15 +68,6 @@ function registerDatasources(datasources: ICommon.Datasources, config: ICommon.C
   return new ContainerModule(bind => {
     // Currently only handles dynamoDB tables
     _bindDynamoDBTables(datasources.dynamoDB, bind, config);
-  });
-}
-
-function registerEnvironment(envVars: string[]) {
-  return new ContainerModule(bind => {
-    envVars.forEach(env => {
-      const key = (ENV[env] = Symbol.for(env));
-      bind(key).toConstantValue(process.env[ENV] || '');
-    });
   });
 }
 
