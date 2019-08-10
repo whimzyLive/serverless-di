@@ -26,8 +26,3 @@ export const UTILS = {
 export const AWS = {
   Table: Symbol.for('Table')
 };
-
-export const SDK = {
-  DocumentClient: Symbol.for('DocumentClient'),
-  DynamoDB: Symbol.for('DynamoDB')
-};
